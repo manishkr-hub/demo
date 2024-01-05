@@ -1,1 +1,1 @@
-# demo
+# Demo project of KredX
