@@ -19,15 +19,15 @@ public class UserController {
     private AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<User> signUp(@RequestParam String username, @RequestParam String password) {
-        User user = userService.signUp(username, password);
-        return ResponseEntity.ok(user);
+    public ResponseEntity<User> signUp(@RequestBody User user) {
+        User signedUpUser = userService.signUp(user);
+        return ResponseEntity.ok(signedUpUser);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
+    public ResponseEntity<String> login(@RequestBody User user) {
         try {
-            authService.login(username, password);
+            authService.login(user);
             return ResponseEntity.ok("Login successful");
         } catch (AuthenticationException e) {
             return ResponseEntity.badRequest().body("Invalid credentials");

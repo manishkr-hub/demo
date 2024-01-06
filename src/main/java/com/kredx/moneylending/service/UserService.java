@@ -12,19 +12,18 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User signUp(String username, String password) {
-        Optional<User> existingUser = userRepository.findByUsername(username);
+    public User signUp(User user) {
+        Optional<User> existingUser = userRepository.findByUsername(user.getUsername());
         if (existingUser.isPresent()) {
             // Username is already taken
             throw new IllegalArgumentException("Username is already taken");
         }
 
         User newUser = new User();
-        newUser.setUsername(username);
-        newUser.setPassword(password);
+        newUser.setUsername(user.getUsername());
+        newUser.setPassword(user.getPassword());
 
-        userRepository.save(newUser);
-        return newUser;
+        return userRepository.save(newUser);
     }
 
     public User getUserByUsername(String username) {
