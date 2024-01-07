@@ -1,6 +1,8 @@
 package com.kredx.moneylending.controller;
 
+import com.kredx.moneylending.dto.LogInDto;
 import com.kredx.moneylending.entity.User;
+import com.kredx.moneylending.dto.SignUpDto;
 import com.kredx.moneylending.service.AuthService;
 import com.kredx.moneylending.service.UserService;
 import com.kredx.moneylending.util.Contants;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(Contants.API_VERSION + Contants.USER_ENDPOINT)
 public class UserController {
+
     @Autowired
     private UserService userService;
 
@@ -19,15 +22,20 @@ public class UserController {
     private AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<User> signUp(@RequestBody User user) {
-        User signedUpUser = userService.signUp(user);
-        return ResponseEntity.ok(signedUpUser);
+    public ResponseEntity<?> signUp(@RequestBody SignUpDto signUpDto) {
+        try {
+            User signedUpUser = userService.signUp(signUpDto);
+            return ResponseEntity.ok(signedUpUser);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Failed to borrow: " + e.getMessage());
+        }
+
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody User user) {
+    public ResponseEntity<String> login(@RequestBody LogInDto logInDto) {
         try {
-            authService.login(user);
+            authService.login(logInDto);
             return ResponseEntity.ok("Login successful");
         } catch (AuthenticationException e) {
             return ResponseEntity.badRequest().body("Invalid credentials");

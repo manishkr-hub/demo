@@ -1,6 +1,6 @@
 package com.kredx.moneylending.entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -13,6 +13,7 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name="transactions")
 public class Transaction {
 
     @Id
